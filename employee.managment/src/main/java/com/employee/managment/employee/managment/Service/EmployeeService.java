@@ -2,6 +2,7 @@ package com.employee.managment.employee.managment.Service;
 
 import com.employee.managment.employee.managment.Repo.DepartmentRepo;
 import com.employee.managment.employee.managment.Repo.EmployeeRepo;
+import com.employee.managment.employee.managment.dto.EmployeeRequest;
 import com.employee.managment.employee.managment.entity.Department;
 import com.employee.managment.employee.managment.entity.Employee;
 import com.employee.managment.employee.managment.entity.enums.Designation;
@@ -42,5 +43,24 @@ public class EmployeeService {
         Optional<Department> optionalDepartment = departmentRepo.findById(departmentId);
         return optionalDepartment.map(employeeRepo::findByDepartment).orElseThrow(() ->
                 new RuntimeException("Department not found with ID: " + departmentId));
+    }
+
+    public List<Employee> getEmployeesByDesignation(Designation designation) {
+          return employeeRepo.findByDesignation(designation);
+    }
+
+    public Employee addEmployee(EmployeeRequest employeeRequest) {
+        Department department = departmentRepo.findById(employeeRequest.getDepartmentId())
+                .orElseThrow(() -> new RuntimeException("Department not found"));
+
+        // Create and set the employee details
+        Employee employee = new Employee();
+        employee.setName(employeeRequest.getName());
+        employee.setDesignation(employeeRequest.getDesignation());
+        employee.setJoiningDate(employeeRequest.getJoiningDate());
+        employee.setDepartment(department);
+
+        // Save the employee to the database
+        return employeeRepo.save(employee);
     }
 }

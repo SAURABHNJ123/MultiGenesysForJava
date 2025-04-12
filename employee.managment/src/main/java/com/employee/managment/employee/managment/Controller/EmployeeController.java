@@ -1,10 +1,11 @@
 package com.employee.managment.employee.managment.Controller;
 
 import com.employee.managment.employee.managment.Service.EmployeeService;
+import com.employee.managment.employee.managment.dto.EmployeeRequest;
 import com.employee.managment.employee.managment.entity.Employee;
 import com.employee.managment.employee.managment.entity.enums.Designation;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,15 +29,9 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getAllEmployeesPaginated(page, size));
     }
 
-
-    @GetMapping("/by-designation")
-    public ResponseEntity<List<Employee>> retrieveEmployeeByDesignation(@RequestParam Designation designation) {
-        return ResponseEntity.ok(employeeService.retrieveEmployeeByDesignation(designation));
-    }
-
     @GetMapping("/by-salary-range")
-    public ResponseEntity<List<Employee>> retrieveEmployeeBySalaryRange(@RequestParam Double minSalary,
-                                                                        @RequestParam Double maxSalary) {
+    public ResponseEntity<List<Employee>> retrieveEmployeeBySalaryRange(@RequestParam(defaultValue = "0") Double minSalary,
+                                                                        @RequestParam(defaultValue ="1.7976931348623157E308") Double maxSalary) {
         return ResponseEntity.ok(employeeService.retrieveEmployeeBySalaryRange(minSalary, maxSalary));
     }
 
@@ -44,4 +39,17 @@ public class EmployeeController {
     public ResponseEntity<List<Employee>> retrieveEmployeeByDepartment(@PathVariable Long departmentId) {
         return ResponseEntity.ok(employeeService.retrieveEmployeeByDepartment(departmentId));
     }
+
+    @GetMapping("/by-designation")
+    public ResponseEntity<List<Employee>> getEmployeesByDesignation(@RequestParam(defaultValue = "DEVELOPER") Designation designation) {
+        List<Employee> employees = employeeService.getEmployeesByDesignation(designation);
+        return ResponseEntity.ok(employees);
+    }
+
+    @PostMapping("/create-employee-under-department")
+    public ResponseEntity<Employee> addEmployee(@RequestBody EmployeeRequest employeeRequest) {
+        Employee savedEmployee = employeeService.addEmployee(employeeRequest);
+        return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
+    }
+
 }

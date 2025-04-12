@@ -11,7 +11,7 @@ public class Department {
     private Long id;
     private String name;
     private String location;
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy ="department")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy ="department")
     private List<Employee> employees;
 
     public Department() {

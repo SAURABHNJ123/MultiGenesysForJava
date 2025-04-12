@@ -1,6 +1,7 @@
 package com.employee.managment.employee.managment.entity;
 
 import com.employee.managment.employee.managment.entity.enums.Designation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -12,18 +13,18 @@ public class Employee {
     private Long id;
 
     private String name;
-
+    @Enumerated(EnumType.STRING)
     private Designation designation;
 
     private LocalDate joiningDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Department department;
 
     @OneToOne(mappedBy = "employee")
+    @JsonIgnore
     private Salary salary;
-
-
 
     public Employee() {
     }

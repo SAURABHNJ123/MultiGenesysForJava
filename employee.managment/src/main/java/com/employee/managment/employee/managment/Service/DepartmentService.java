@@ -23,15 +23,4 @@ public class DepartmentService {
         return departmentRepo.save(department);
     }
 
-
-    public Department createEmployee(Department department, Employee employee) {
-        Department save=new Department();
-        save.setName(department.getName());
-        save.setLocation(department.getLocation());
-        List<Employee> employees=new ArrayList<>();
-        employees.add(employee);
-        save.setEmployees(employees);
-       return departmentRepo.save(save);
-
-    }
 }

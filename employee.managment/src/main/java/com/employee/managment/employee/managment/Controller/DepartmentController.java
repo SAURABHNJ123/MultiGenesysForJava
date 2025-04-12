@@ -22,9 +22,6 @@ public class DepartmentController {
     public ResponseEntity<Department> createDepartment(@RequestBody Department department){
         return ResponseEntity.ok(departmentService.createDepartment(department));
     }
-    @PostMapping("/create-employee")
-    public ResponseEntity<Department> createEmployee(@RequestBody Department department,@RequestBody Employee employee){
-        return ResponseEntity.ok(departmentService.createEmployee(department,employee));
-    }
+
 
 }
